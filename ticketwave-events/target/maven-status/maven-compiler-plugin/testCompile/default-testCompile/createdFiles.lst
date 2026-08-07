@@ -1,0 +1,5 @@
+com\ticketwave\TicketOrderFlowIntegrationTest.class
+com\ticketwave\infrastructure\bus\InMemoryEventBus.class
+com\ticketwave\infrastructure\bus\InMemoryCommandBus.class
+com\ticketwave\config\TestBusConfig.class
+com\ticketwave\infrastructure\saga\InMemorySagaStateRepository.class

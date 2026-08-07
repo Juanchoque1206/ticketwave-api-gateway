@@ -1,0 +1,8 @@
+com\ticketwave\ticketorder\infrastructure\bus\InMemoryEventBus.class
+com\ticketwave\ticketorder\config\TestInfraConfig.class
+com\ticketwave\ticketorder\infrastructure\gateway\FakeEventGateway.class
+com\ticketwave\ticketorder\infrastructure\gateway\FakeFraudGateway.class
+com\ticketwave\ticketorder\infrastructure\gateway\FakePromotionGateway.class
+com\ticketwave\ticketorder\TicketOrderLifecycleIntegrationTest.class
+com\ticketwave\ticketorder\infrastructure\gateway\FakeUserGateway.class
+com\ticketwave\ticketorder\infrastructure\bus\InMemoryCommandBus.class

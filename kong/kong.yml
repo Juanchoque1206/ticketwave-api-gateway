@@ -1,0 +1,51 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+  - name: booking-service
+    url: http://host.docker.internal:8081
+    routes:
+      - name: booking-route
+        paths:
+          - /booking
+
+  - name: payment-service
+    url: http://host.docker.internal:8082
+    routes:
+      - name: payment-route
+        paths:
+          - /payment
+
+  - name: shipping-service
+    url: http://host.docker.internal:8083
+    routes:
+      - name: shipping-route
+        paths:
+          - /shipping
+
+plugins:
+  - name: prometheus
+  - name: jwt
+    config:
+      key_claim_name: kid
+      secret_is_base64: false
+
+# ---------------------------------------------------------------------------
+# TLS termination
+# ---------------------------------------------------------------------------
+# Self-signed placeholder cert for local testing. Generate a real one with:
+#   openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem \
+#       -days 365 -nodes -subj "/CN=api.ticketwave.local"
+# and paste the PEM blocks below (replace the placeholders).
+# certificates:
+#   - id: ticketwave-tls
+#     cert: |
+#       -----BEGIN CERTIFICATE-----
+#       (replace with your certificate PEM - see README)
+#       -----END CERTIFICATE-----
+#     key: |
+#       -----BEGIN PRIVATE KEY-----
+#       (replace with your private key PEM - see README)
+#       -----END PRIVATE KEY-----
+#     snis:
+#       - name: api.ticketwave.local

@@ -1,0 +1,4 @@
+com\ticketwave\reports\config\TestInfraConfig.class
+com\ticketwave\reports\infrastructure\bus\InMemoryEventBus.class
+com\ticketwave\reports\infrastructure\controller\ReportControllerIntegrationTest.class
+com\ticketwave\reports\application\OrderReportProjectionTest.class

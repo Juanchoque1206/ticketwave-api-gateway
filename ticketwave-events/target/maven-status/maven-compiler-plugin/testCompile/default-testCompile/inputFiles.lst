@@ -1,0 +1,5 @@
+C:\juandev\mdeis\project\ticketwave01\ticketwave-events\src\test\java\com\ticketwave\config\TestBusConfig.java
+C:\juandev\mdeis\project\ticketwave01\ticketwave-events\src\test\java\com\ticketwave\infrastructure\bus\InMemoryCommandBus.java
+C:\juandev\mdeis\project\ticketwave01\ticketwave-events\src\test\java\com\ticketwave\infrastructure\bus\InMemoryEventBus.java
+C:\juandev\mdeis\project\ticketwave01\ticketwave-events\src\test\java\com\ticketwave\infrastructure\saga\InMemorySagaStateRepository.java
+C:\juandev\mdeis\project\ticketwave01\ticketwave-events\src\test\java\com\ticketwave\TicketOrderFlowIntegrationTest.java

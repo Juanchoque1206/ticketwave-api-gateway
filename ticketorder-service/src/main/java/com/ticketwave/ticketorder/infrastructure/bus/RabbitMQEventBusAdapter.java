@@ -1,0 +1,72 @@
+package com.ticketwave.ticketorder.infrastructure.bus;
+
+import com.ticketwave.domain.bus.EventBus;
+import com.ticketwave.domain.bus.EventHandler;
+import com.ticketwave.domain.events.DomainEvent;
+import jakarta.annotation.PostConstruct;
+import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
+
+/**
+ * Production event transport backed by RabbitMQ. Events are routed on the shared
+ * {@code ticketwave.events} topic exchange; this service binds its own queue so
+ * it receives the events relevant to the order lifecycle (and deserializes the
+ * shared contract, which is present on both classpaths).
+ */
+public class RabbitMQEventBusAdapter implements EventBus {
+
+    public static final String EXCHANGE = "ticketwave.events";
+    public static final String QUEUE = "ticketwave.events.all";
+    public static final String ROUTING_KEY = "#";
+
+    private final RabbitTemplate rabbitTemplate;
+    private final AmqpAdmin amqpAdmin;
+    private final Map<Class<?>, List<Consumer<DomainEvent>>> handlers = new ConcurrentHashMap<>();
+
+    public RabbitMQEventBusAdapter(RabbitTemplate rabbitTemplate, AmqpAdmin amqpAdmin) {
+        this.rabbitTemplate = rabbitTemplate;
+        this.amqpAdmin = amqpAdmin;
+    }
+
+    @PostConstruct
+    void declareTopology() {
+        if (amqpAdmin == null) {
+            return;
+        }
+        TopicExchange exchange = new TopicExchange(EXCHANGE, true, false);
+        Queue queue = new Queue(QUEUE, true);
+        Binding binding = BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
+        amqpAdmin.declareExchange(exchange);
+        amqpAdmin.declareQueue(queue);
+        amqpAdmin.declareBinding(binding);
+    }
+
+    @Override
+    public void publish(DomainEvent event) {
+        rabbitTemplate.convertAndSend(EXCHANGE, event.getClass().getSimpleName(), event);
+    }
+
+    @RabbitListener(queues = QUEUE)
+    public void onMessage(DomainEvent event) {
+        for (Consumer<DomainEvent> consumer : handlers.getOrDefault(event.getClass(), List.of())) {
+            consumer.accept(event);
+        }
+    }
+
+    @Override
+    public <E extends DomainEvent> void subscribe(Class<E> eventType, EventHandler<E> handler) {
+        handlers.computeIfAbsent(eventType, k -> new CopyOnWriteArrayList<>())
+                .add(event -> handler.handle(eventType.cast(event)));
+    }
+}
