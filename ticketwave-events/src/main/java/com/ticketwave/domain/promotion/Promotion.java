@@ -36,7 +36,7 @@ public class Promotion {
     @Column(nullable = false, length = 30)
     private PromotionType type;
 
-    @Column(nullable = false, precision = 5, scale = 2)
+    @Column(name = "promotion_value", nullable = false, precision = 5, scale = 2)
     private BigDecimal value;
 
     @Enumerated(EnumType.STRING)
