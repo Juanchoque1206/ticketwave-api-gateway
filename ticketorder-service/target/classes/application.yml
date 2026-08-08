@@ -7,7 +7,7 @@ spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:local}
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/ticketorder_db}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/ticketwave_aw_torder}
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
@@ -27,6 +27,7 @@ ticketwave:
   order-ttl-minutes: ${ORDER_TTL_MINUTES:15}
   monolith:
     base-url: ${MONOLITH_BASE_URL:http://localhost:8081}
+    internal-token: ${INTERNAL_TOKEN:change-me-internal-token}
 
 management:
   endpoints:

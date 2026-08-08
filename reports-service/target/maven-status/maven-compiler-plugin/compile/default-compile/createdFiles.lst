@@ -1,11 +1,11 @@
 com\ticketwave\reports\domain\order\OrderReport.class
 com\ticketwave\domain\events\PaymentFailed.class
 com\ticketwave\reports\domain\projection\EventProjectionRepository.class
+com\ticketwave\reports\infrastructure\bus\InMemoryEventBus.class
 com\ticketwave\reports\domain\projection\EventProjection.class
 com\ticketwave\reports\infrastructure\dto\report\PaymentReportResponse.class
 com\ticketwave\reports\infrastructure\security\SecurityConfig.class
 com\ticketwave\reports\infrastructure\config\EventBusConfig.class
-com\ticketwave\reports\ReportsApplication.class
 com\ticketwave\domain\bus\EventBus.class
 com\ticketwave\reports\domain\projection\NotificationProjection.class
 com\ticketwave\domain\events\TicketOrderCancelled.class

@@ -16,6 +16,7 @@ com\ticketwave\infrastructure\security\UserDetailsServiceImpl.class
 com\ticketwave\domain\commands\Command.class
 com\ticketwave\infrastructure\repository\JpaPaymentRepository.class
 com\ticketwave\domain\promotion\PromotionType.class
+com\ticketwave\infrastructure\bus\InMemoryEventBus.class
 com\ticketwave\domain\bus\EventHandler.class
 com\ticketwave\domain\saga\TicketOrderSagaOrchestrator.class
 com\ticketwave\infrastructure\repository\JpaPromotionRepository.class
@@ -30,6 +31,7 @@ com\ticketwave\domain\ticket\TicketStatus.class
 com\ticketwave\application\SearchEventsUseCase.class
 com\ticketwave\domain\events\TicketRefunded.class
 com\ticketwave\config\EventBusConfig.class
+com\ticketwave\infrastructure\bus\InMemoryCommandBus.class
 com\ticketwave\infrastructure\dto\notification\NotificationResponse.class
 com\ticketwave\infrastructure\controller\UserController.class
 com\ticketwave\infrastructure\order\OrderInfo.class
@@ -65,6 +67,7 @@ com\ticketwave\domain\saga\SagaState.class
 com\ticketwave\infrastructure\exception\OrderStateException.class
 com\ticketwave\infrastructure\util\QrCodeGenerator.class
 com\ticketwave\domain\events\FraudDetected.class
+com\ticketwave\config\LocalBusConfig.class
 com\ticketwave\domain\commands\CancelTicketOrderCommand.class
 com\ticketwave\infrastructure\dto\promotion\PromotionResponse.class
 com\ticketwave\infrastructure\exception\FraudRiskException.class

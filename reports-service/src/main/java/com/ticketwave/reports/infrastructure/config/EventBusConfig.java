@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.ticketwave.domain.bus.EventBus;
+import com.ticketwave.reports.infrastructure.bus.InMemoryEventBus;
 import com.ticketwave.reports.infrastructure.bus.RabbitMQEventBusAdapter;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -23,6 +24,12 @@ import org.springframework.context.annotation.Profile;
  */
 @Configuration
 public class EventBusConfig {
+
+    @Bean
+    @Profile("local")
+    public EventBus inMemoryEventBus() {
+        return new InMemoryEventBus();
+    }
 
     @Bean
     @Profile("rabbitmq")

@@ -32,6 +32,7 @@ com\ticketwave\domain\events\NotificationSent.class
 com\ticketwave\domain\events\TicketRefunded.class
 com\ticketwave\ticketorder\infrastructure\bus\RabbitMQCommandBusAdapter.class
 com\ticketwave\ticketorder\application\port\EventGateway.class
+com\ticketwave\ticketorder\infrastructure\bus\LocalCommandBus.class
 com\ticketwave\domain\events\EventUpdated.class
 com\ticketwave\ticketorder\application\OrderService.class
 com\ticketwave\domain\bus\CommandBus.class
@@ -42,7 +43,6 @@ com\ticketwave\ticketorder\application\CancelOrderUseCase.class
 com\ticketwave\ticketorder\application\port\FraudGateway.class
 com\ticketwave\ticketorder\infrastructure\security\SecurityConfig.class
 com\ticketwave\domain\events\PaymentFailed.class
-com\ticketwave\ticketorder\TicketOrderApplication.class
 com\ticketwave\ticketorder\infrastructure\rest\RestEventGateway.class
 com\ticketwave\ticketorder\infrastructure\repository\JpaTicketOrderRepository.class
 com\ticketwave\domain\events\EventCreated.class
@@ -60,6 +60,7 @@ com\ticketwave\domain\commands\RefundPaymentCommand.class
 com\ticketwave\domain\events\DomainEvent.class
 com\ticketwave\ticketorder\infrastructure\rest\RestUserGateway.class
 com\ticketwave\ticketorder\domain\order\OrderStatus.class
+com\ticketwave\ticketorder\infrastructure\bus\LocalEventBus.class
 com\ticketwave\domain\events\EventCancelled.class
 com\ticketwave\ticketorder\infrastructure\dto\order\OrderResponse.class
 com\ticketwave\ticketorder\infrastructure\rest\FraudGuardRequest.class
