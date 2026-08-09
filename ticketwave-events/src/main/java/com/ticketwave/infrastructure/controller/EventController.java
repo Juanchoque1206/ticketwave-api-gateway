@@ -5,6 +5,8 @@ import com.ticketwave.application.EventService;
 import com.ticketwave.infrastructure.dto.event.EventRequest;
 import com.ticketwave.infrastructure.dto.event.EventResponse;
 import com.ticketwave.infrastructure.dto.event.EventSearchRequest;
+import com.ticketwave.infrastructure.order.OrderInfo;
+import com.ticketwave.infrastructure.order.OrderInfoClient;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -24,10 +27,19 @@ public class EventController {
 
     private final EventService eventService;
     private final SearchEventsUseCase searchEventsUseCase;
+    private final OrderInfoClient orderInfoClient;
 
-    public EventController(EventService eventService, SearchEventsUseCase searchEventsUseCase) {
+    public EventController(EventService eventService,
+                           SearchEventsUseCase searchEventsUseCase,
+                           OrderInfoClient orderInfoClient) {
         this.eventService = eventService;
         this.searchEventsUseCase = searchEventsUseCase;
+        this.orderInfoClient = orderInfoClient;
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<List<OrderInfo>> getAllOrders() {
+        return ResponseEntity.ok(orderInfoClient.getAllOrders());
     }
 
     @GetMapping

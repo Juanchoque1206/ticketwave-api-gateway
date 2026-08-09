@@ -3,12 +3,14 @@ package com.ticketwave.infrastructure.order;
 import com.ticketwave.infrastructure.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -35,6 +37,15 @@ public class OrderInfoClient {
                     throw new ResourceNotFoundException("Order not found");
                 })
                 .body(OrderInfo.class);
+    }
+
+    public List<OrderInfo> getAllOrders() {
+        return restClient.get()
+                .uri("/api/orders")
+                .headers(this::forwardAuthorization)
+                .retrieve()
+                .body(new ParameterizedTypeReference<List<OrderInfo>>() {
+                });
     }
 
     private void forwardAuthorization(HttpHeaders headers) {

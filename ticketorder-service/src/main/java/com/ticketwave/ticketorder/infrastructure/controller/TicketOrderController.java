@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,10 +53,8 @@ public class TicketOrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderResponse>> myOrders(Authentication authentication,
-                                                        HttpServletRequest httpRequest) {
-        AuthenticationContext ctx = new AuthenticationContext(authentication.getName(), clientIp(httpRequest));
-        return ResponseEntity.ok(orderService.listOrdersForUser(ctx));
+    public ResponseEntity<List<OrderResponse>> allOrders() {
+        return ResponseEntity.ok(orderService.listAll());
     }
 
     @GetMapping("/{orderId}")

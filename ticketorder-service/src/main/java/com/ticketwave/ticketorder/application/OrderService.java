@@ -142,6 +142,11 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
+    public List<OrderResponse> listAll() {
+        return orderRepository.findAll().stream().map(this::toResponse).toList();
+    }
+
+    @Transactional(readOnly = true)
     public List<OrderResponse> listOrdersForUser(AuthenticationContext ctx) {
         UserData user = userGateway.findByUsername(ctx.username());
         return orderRepository.findByUserId(user.id()).stream().map(this::toResponse).toList();

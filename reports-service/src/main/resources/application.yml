@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8091
 
 spring:
   application:
@@ -29,8 +29,10 @@ ticketwave:
     expiration-ms: ${JWT_EXPIRATION:86400000}
 
 springdoc:
+  api-docs:
+    path: /v3/api-docs/reports
   swagger-ui:
-    path: /swagger-ui.html
+    path: /reports/swagger-ui.html
 
 management:
   endpoints:
@@ -41,3 +43,10 @@ management:
 logging:
   level:
     com.ticketwave.reports: DEBUG
+
+
+# http://localhost:8091/reports/swagger-ui/index.html
+
+# http://localhost:9000/ticketorder/swagger-ui/index.html
+# http://localhost:9000/reports/swagger-ui/index.html
+# http://localhost:9000/legacy/swagger-ui/index.html

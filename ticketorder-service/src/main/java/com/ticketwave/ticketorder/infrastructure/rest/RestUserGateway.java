@@ -4,7 +4,6 @@ import com.ticketwave.ticketorder.application.port.UserData;
 import com.ticketwave.ticketorder.application.port.UserGateway;
 import com.ticketwave.ticketorder.infrastructure.exception.ResourceNotFoundException;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
@@ -26,7 +25,7 @@ public class RestUserGateway implements UserGateway {
         MonolithUserDto dto = restClient.get()
                 .uri("/api/users/by-username/{username}", username)
                 .retrieve()
-                .onStatus(status -> status == HttpStatus.NOT_FOUND,
+                .onStatus(status -> status.value() == 404,
                         (request, response) -> {
                             throw new ResourceNotFoundException("User not found");
                         })

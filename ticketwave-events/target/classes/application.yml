@@ -14,11 +14,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect
   cache:
     type: redis
   data:
@@ -51,8 +50,10 @@ ticketwave:
     base-url: ${ORDER_SERVICE_URL:http://localhost:8090}
 
 springdoc:
+  api-docs:
+    path: /v3/api-docs/legacy
   swagger-ui:
-    path: /swagger-ui.html
+    path: /legacy/swagger-ui.html
 
 management:
   endpoints:

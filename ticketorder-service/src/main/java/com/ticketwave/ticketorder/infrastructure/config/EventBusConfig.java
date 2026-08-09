@@ -27,13 +27,13 @@ import org.springframework.context.annotation.Profile;
 public class EventBusConfig {
 
     @Bean
-    @Profile("local")
+    @Profile("!rabbitmq & !test")
     public EventBus localEventBus() {
         return new LocalEventBus();
     }
 
     @Bean
-    @Profile("local")
+    @Profile("!rabbitmq & !test")
     public CommandBus localCommandBus() {
         return new LocalCommandBus();
     }

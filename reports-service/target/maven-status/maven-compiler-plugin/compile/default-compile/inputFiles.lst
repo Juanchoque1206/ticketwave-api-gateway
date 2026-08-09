@@ -28,6 +28,7 @@ C:\juandev\mdeis\project\complete-version\ticketwave-api-gateway\ticketwave-api-
 C:\juandev\mdeis\project\complete-version\ticketwave-api-gateway\ticketwave-api-gateway\reports-service\src\main\java\com\ticketwave\reports\infrastructure\bus\RabbitMQEventBusAdapter.java
 C:\juandev\mdeis\project\complete-version\ticketwave-api-gateway\ticketwave-api-gateway\reports-service\src\main\java\com\ticketwave\reports\infrastructure\config\EventBusConfig.java
 C:\juandev\mdeis\project\complete-version\ticketwave-api-gateway\ticketwave-api-gateway\reports-service\src\main\java\com\ticketwave\reports\infrastructure\controller\ReportController.java
+C:\juandev\mdeis\project\complete-version\ticketwave-api-gateway\ticketwave-api-gateway\reports-service\src\main\java\com\ticketwave\reports\infrastructure\controller\TestController.java
 C:\juandev\mdeis\project\complete-version\ticketwave-api-gateway\ticketwave-api-gateway\reports-service\src\main\java\com\ticketwave\reports\infrastructure\dto\report\NotificationReportResponse.java
 C:\juandev\mdeis\project\complete-version\ticketwave-api-gateway\ticketwave-api-gateway\reports-service\src\main\java\com\ticketwave\reports\infrastructure\dto\report\OrderReportResponse.java
 C:\juandev\mdeis\project\complete-version\ticketwave-api-gateway\ticketwave-api-gateway\reports-service\src\main\java\com\ticketwave\reports\infrastructure\dto\report\PaymentReportResponse.java

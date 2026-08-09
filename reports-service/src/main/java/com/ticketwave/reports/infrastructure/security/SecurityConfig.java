@@ -25,12 +25,13 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
+                                "/v3/api-docs/reports/**",
+                                "/reports/swagger-ui.html",
+                                "/reports/swagger-ui/**",
                                 "/h2-console/**",
                                 "/actuator/health",
-                                "/"
+                                "/",
+                                "/test/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

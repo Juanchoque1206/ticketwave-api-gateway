@@ -107,6 +107,7 @@ com\ticketwave\domain\bus\CommandBus.class
 com\ticketwave\domain\events\PaymentAuthorized.class
 com\ticketwave\domain\commands\IssueTicketCommand.class
 com\ticketwave\domain\user\Role.class
+com\ticketwave\infrastructure\order\OrderInfoClient$1.class
 com\ticketwave\config\JacksonConfig.class
 com\ticketwave\domain\user\AppUser.class
 com\ticketwave\domain\saga\SagaStatus.class

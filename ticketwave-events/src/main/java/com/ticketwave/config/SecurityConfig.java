@@ -40,8 +40,6 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/events/*/reserve",
-                                "/api/events/*/release",
                                 "/api/promotions/*/quote",
                                 "/api/promotions/*/increment-usage",
                                 "/api/fraud/guard",
@@ -52,12 +50,13 @@ public class SecurityConfig {
                                 "/api/users/register",
                                 "/api/users/login",
                                 "/api/events/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
+                                "/v3/api-docs/legacy/**",
+                                "/legacy/swagger-ui.html",
+                                "/legacy/swagger-ui/**",
                                 "/h2-console/**",
                                 "/actuator/health",
-                                "/"
+                                "/",
+                                "/api/events/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

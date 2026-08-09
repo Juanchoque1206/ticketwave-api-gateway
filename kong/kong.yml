@@ -2,33 +2,70 @@ _format_version: "3.0"
 _transform: true
 
 services:
-  - name: booking-service
+  - name: service-8091
+    url: http://host.docker.internal:8091
+    routes:
+      - name: route-8091
+        paths:
+          - /api8091
+        strip_path: true
+      - name: route-8091-docs
+        paths:
+          - /v3/api-docs/reports
+        strip_path: false
+      - name: route-8091-swagger-ui
+        paths:
+          - /reports
+        strip_path: false
+
+  - name: service-8090
+    url: http://host.docker.internal:8090
+    routes:
+      - name: route-8090
+        paths:
+          - /api8090
+        strip_path: true
+      - name: route-8090-docs
+        paths:
+          - /v3/api-docs/ticketorder
+        strip_path: false
+      - name: route-8090-swagger-ui
+        paths:
+          - /ticketorder
+        strip_path: false
+
+  - name: service-8081
     url: http://host.docker.internal:8081
     routes:
-      - name: booking-route
+      - name: route-8081
         paths:
-          - /booking
-
-  - name: payment-service
-    url: http://host.docker.internal:8082
-    routes:
-      - name: payment-route
+          - /api8081
+        strip_path: true
+      - name: route-8081-docs
         paths:
-          - /payment
-
-  - name: shipping-service
-    url: http://host.docker.internal:8083
-    routes:
-      - name: shipping-route
+          - /v3/api-docs/legacy
+        strip_path: false
+      - name: route-8081-swagger-ui
         paths:
-          - /shipping
+          - /legacy
+        strip_path: false
 
 plugins:
   - name: prometheus
-  - name: jwt
+  
+  - name: http-log
     config:
-      key_claim_name: kid
-      secret_is_base64: false
+      http_endpoint: http://host.docker.internal:8085/logs
+      method: POST
+      timeout: 1000
+      keepalive: 30
+      flush_timeout: 2
+
+
+  # - name: jwt
+  #   config:
+  #     key_claim_name: kid
+  #     secret_is_base64: false
 
 # ---------------------------------------------------------------------------
 # TLS termination
