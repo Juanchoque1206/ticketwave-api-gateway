@@ -224,6 +224,19 @@ Swagger UI: http://localhost:8080/swagger-ui.html
 - <http://localhost:8090/ticketorder/swagger-ui/index.html>
 - <http://localhost:9000/reports/swagger-ui/index.html>
 
+## Diagrams
+
+System architecture and data model diagrams (open the `.svg` files in a browser or the `.drawio` sources in [draw.io](https://app.diagrams.net/)):
+
+### C4 model (system architecture)
+
+- Context (C1): `diagrams\c4model\ticketwave-c1-context.drawio.svg`
+- Containers (C2): `diagrams\c4model\ticketwave-c2-container_copy.drawio.svg`
+
+### Database diagram
+
+- ER model: `diagrams\db\ticketwave-er-full.drawio.svg`
+
 ## Demo credentials (automatic seed)
 
 | User   | Password | Role  |
