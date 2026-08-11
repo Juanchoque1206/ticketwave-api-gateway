@@ -1,8 +1,0 @@
-C:\juandev\mdeis\project\complete-version\ticketwave-api-gateway\ticketwave-api-gateway\ticketorder-service\src\test\java\com\ticketwave\ticketorder\config\TestInfraConfig.java
-C:\juandev\mdeis\project\complete-version\ticketwave-api-gateway\ticketwave-api-gateway\ticketorder-service\src\test\java\com\ticketwave\ticketorder\infrastructure\bus\InMemoryCommandBus.java
-C:\juandev\mdeis\project\complete-version\ticketwave-api-gateway\ticketwave-api-gateway\ticketorder-service\src\test\java\com\ticketwave\ticketorder\infrastructure\bus\InMemoryEventBus.java
-C:\juandev\mdeis\project\complete-version\ticketwave-api-gateway\ticketwave-api-gateway\ticketorder-service\src\test\java\com\ticketwave\ticketorder\infrastructure\gateway\FakeEventGateway.java
-C:\juandev\mdeis\project\complete-version\ticketwave-api-gateway\ticketwave-api-gateway\ticketorder-service\src\test\java\com\ticketwave\ticketorder\infrastructure\gateway\FakeFraudGateway.java
-C:\juandev\mdeis\project\complete-version\ticketwave-api-gateway\ticketwave-api-gateway\ticketorder-service\src\test\java\com\ticketwave\ticketorder\infrastructure\gateway\FakePromotionGateway.java
-C:\juandev\mdeis\project\complete-version\ticketwave-api-gateway\ticketwave-api-gateway\ticketorder-service\src\test\java\com\ticketwave\ticketorder\infrastructure\gateway\FakeUserGateway.java
-C:\juandev\mdeis\project\complete-version\ticketwave-api-gateway\ticketwave-api-gateway\ticketorder-service\src\test\java\com\ticketwave\ticketorder\TicketOrderLifecycleIntegrationTest.java
