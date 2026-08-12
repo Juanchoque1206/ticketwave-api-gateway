@@ -19,24 +19,30 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 /**
- * Production command transport. Commands are routed through a dedicated
- * {@code ticketwave.commands} topic exchange (separate from the event exchange)
- * and consumed through a bound queue so every instance of the monolith executes
- * the requested workflow step. Used when the rabbitmq profile is active.
+ * Production command transport. Commands are routed through the dedicated
+ * {@code ticketwave.commands} topic exchange and the events service consumes
+ * them from its OWN durable queue so the orchestrator's commands are received
+ * without competing with ticketorder or other services' queues. The queue name
+ * is managed from configuration ({@code ticketwave.bus.commands-queue}).
  */
 public class RabbitMQCommandBusAdapter implements CommandBus {
 
     public static final String EXCHANGE = "ticketwave.commands";
-    public static final String QUEUE = "ticketwave.commands.all";
     public static final String ROUTING_KEY = "#";
 
     private final RabbitTemplate rabbitTemplate;
     private final AmqpAdmin amqpAdmin;
+    private final String queue;
     private final Map<Class<?>, List<Consumer<Command>>> handlers = new ConcurrentHashMap<>();
 
-    public RabbitMQCommandBusAdapter(RabbitTemplate rabbitTemplate, AmqpAdmin amqpAdmin) {
+    public RabbitMQCommandBusAdapter(RabbitTemplate rabbitTemplate, AmqpAdmin amqpAdmin, String queue) {
         this.rabbitTemplate = rabbitTemplate;
         this.amqpAdmin = amqpAdmin;
+        this.queue = queue;
+    }
+
+    public String getQueue() {
+        return queue;
     }
 
     @PostConstruct
@@ -45,7 +51,7 @@ public class RabbitMQCommandBusAdapter implements CommandBus {
             return;
         }
         TopicExchange exchange = new TopicExchange(EXCHANGE, true, false);
-        Queue queue = new Queue(QUEUE, true);
+        Queue queue = new Queue(this.queue, true);
         Binding binding = BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
         amqpAdmin.declareExchange(exchange);
         amqpAdmin.declareQueue(queue);
@@ -57,7 +63,7 @@ public class RabbitMQCommandBusAdapter implements CommandBus {
         rabbitTemplate.convertAndSend(EXCHANGE, command.getClass().getSimpleName(), command);
     }
 
-    @RabbitListener(queues = QUEUE)
+    @RabbitListener(queues = "#{@rabbitMqCommandBus.queue}")
     public void onMessage(Command command) {
         for (Consumer<Command> consumer : handlers.getOrDefault(command.getClass(), List.of())) {
             consumer.accept(command);

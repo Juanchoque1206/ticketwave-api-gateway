@@ -19,5 +19,3 @@ ticketwave:
   internal-token: test-internal-token
   order-service:
     base-url: http://localhost:8090
-  saga:
-    recovery-enabled: false

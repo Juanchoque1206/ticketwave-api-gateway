@@ -18,6 +18,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
   cache:
     type: redis
   data:
@@ -48,6 +53,9 @@ ticketwave:
   internal-token: ${INTERNAL_TOKEN:change-me-internal-token}
   order-service:
     base-url: ${ORDER_SERVICE_URL:http://localhost:8090}
+  bus:
+    events-queue: ${BUS_EVENTS_QUEUE:ticketwave.events.events-service}
+    commands-queue: ${BUS_COMMANDS_QUEUE:ticketwave.commands.events-service}
 
 springdoc:
   api-docs:

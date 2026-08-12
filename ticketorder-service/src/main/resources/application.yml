@@ -28,6 +28,9 @@ ticketwave:
   monolith:
     base-url: ${MONOLITH_BASE_URL:http://localhost:8081}
     internal-token: ${INTERNAL_TOKEN:change-me-internal-token}
+  bus:
+    events-queue: ${BUS_EVENTS_QUEUE:ticketwave.events.ticketorder}
+    commands-queue: ${BUS_COMMANDS_QUEUE:ticketwave.commands.ticketorder}
 
 springdoc:
   api-docs:

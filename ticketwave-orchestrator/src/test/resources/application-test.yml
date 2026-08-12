@@ -1,0 +1,9 @@
+spring:
+  data:
+    redis:
+      repositories:
+        enabled: false
+
+ticketwave:
+  saga:
+    recovery-enabled: false

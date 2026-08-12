@@ -11,14 +11,18 @@ import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * RabbitMQ is the shared cross-service bus. The polymorphic type validator only
- * allows the shared contract packages, so a message published by the monolith or
- * the TicketOrder service (e.g. PaymentAuthorized) is deserialized into the
+ * RabbitMQ is the shared cross-service bus. Each service manages its OWN queue
+ * (configured via {@code ticketwave.bus.events-queue}) bound to the shared topic
+ * exchange, so the reports read model receives every event without competing
+ * with the other services' queues. The polymorphic type validator only allows
+ * the shared contract packages, so a message published by the monolith or the
+ * TicketOrder service (e.g. PaymentAuthorized) is deserialized into the
  * identical record type this service keeps on its own classpath. Beans are only
  * created under the rabbitmq profile; tests provide an in-memory double.
  */
@@ -33,8 +37,9 @@ public class EventBusConfig {
 
     @Bean
     @Profile("rabbitmq")
-    public EventBus rabbitMqEventBus(RabbitTemplate rabbitTemplate, AmqpAdmin amqpAdmin) {
-        return new RabbitMQEventBusAdapter(rabbitTemplate, amqpAdmin);
+    public EventBus rabbitMqEventBus(RabbitTemplate rabbitTemplate, AmqpAdmin amqpAdmin,
+                                     @Value("${ticketwave.bus.events-queue:ticketwave.events.reports}") String eventsQueue) {
+        return new RabbitMQEventBusAdapter(rabbitTemplate, amqpAdmin, eventsQueue);
     }
 
     @Bean

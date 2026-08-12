@@ -27,6 +27,8 @@ ticketwave:
   jwt:
     secret: ${JWT_SECRET:ChangeThisSecretKeyInProductionToASecureRandomValueOfAtLeast32BytesLong}
     expiration-ms: ${JWT_EXPIRATION:86400000}
+  bus:
+    events-queue: ${BUS_EVENTS_QUEUE:ticketwave.events.reports}
 
 springdoc:
   api-docs:

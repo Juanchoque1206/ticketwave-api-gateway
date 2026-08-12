@@ -1,10 +1,12 @@
 package com.ticketwave;
 
-import com.ticketwave.domain.bus.EventBus;
+import com.ticketwave.domain.bus.CommandBus;
+import com.ticketwave.domain.commands.IssueTicketCommand;
+import com.ticketwave.domain.commands.NotifyOrderCommand;
+import com.ticketwave.domain.commands.ProcessPaymentCommand;
 import com.ticketwave.domain.event.Event;
 import com.ticketwave.domain.event.EventRepository;
 import com.ticketwave.domain.event.EventStatus;
-import com.ticketwave.domain.events.TicketOrderCreated;
 import com.ticketwave.domain.notification.NotificationRepository;
 import com.ticketwave.domain.payment.Payment;
 import com.ticketwave.domain.payment.PaymentRepository;
@@ -31,10 +33,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Drives the full purchase saga offline: a TicketOrderCreated event published by
- * the ticketorder-service triggers Payment -&gt; Ticket issuance -&gt;
- * Notification through the in-memory bus, with the order aggregate replaced by
- * the scalar orderId carried by the events/commands.
+ * Drives the legacy command handlers offline. With the saga orchestrator split
+ * into its own Spring service, the monolith no longer reacts to
+ * TicketOrderCreated; instead it executes the workflow steps when the
+ * orchestrator publishes the commands through RabbitMQ. Here those commands are
+ * sent directly through the in-memory CommandBus to verify the payment, ticket
+ * issuance and notification steps still produce their side effects.
  */
 @SpringBootTest
 @ActiveProfiles("test")
@@ -42,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class TicketOrderFlowIntegrationTest {
 
     @Autowired
-    private EventBus eventBus;
+    private CommandBus commandBus;
     @Autowired
     private EventRepository eventRepository;
     @Autowired
@@ -55,23 +59,29 @@ class TicketOrderFlowIntegrationTest {
     private NotificationRepository notificationRepository;
 
     @Test
-    void orderCreatedEvent_drivesSagaEndToEnd() {
+    void commands_drivePaymentTicketsAndNotification() {
         AppUser user = createUser();
         Event event = createEvent();
         UUID orderId = UUID.randomUUID();
         BigDecimal total = event.getBasePrice().multiply(BigDecimal.valueOf(2));
 
-        eventBus.publish(new TicketOrderCreated(UUID.randomUUID(), Instant.now(),
-                orderId, user.getId(), event.getId(), 2, total, BigDecimal.ZERO));
+        commandBus.send(new ProcessPaymentCommand(UUID.randomUUID(), Instant.now(),
+                orderId, "STRIPE", total));
+
+        Payment payment = paymentRepository.findByOrderId(orderId).orElse(null);
+        assertNotNull(payment, "a payment should be created for the order");
+        assertEquals(PaymentStatus.SUCCEEDED, payment.getStatus());
+        assertEquals(total, payment.getAmount());
+
+        commandBus.send(new IssueTicketCommand(UUID.randomUUID(), Instant.now(),
+                orderId, user.getId(), event.getId(), 2));
 
         List<Ticket> tickets = ticketRepository.findByOrderId(orderId);
         assertEquals(2, tickets.size());
         tickets.forEach(ticket -> assertEquals(user.getId(), ticket.getUserId()));
 
-        Payment payment = paymentRepository.findByOrderId(orderId).orElse(null);
-        assertNotNull(payment, "saga should have settled a payment");
-        assertEquals(PaymentStatus.SUCCEEDED, payment.getStatus());
-        assertEquals(total, payment.getAmount());
+        commandBus.send(new NotifyOrderCommand(UUID.randomUUID(), Instant.now(),
+                orderId, user.getId(), event.getId()));
 
         assertTrue(!notificationRepository.findByUserIdOrderByCreatedAtDesc(user.getId()).isEmpty(),
                 "order lifecycle notifications expected");

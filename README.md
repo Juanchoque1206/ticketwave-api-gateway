@@ -2,6 +2,27 @@
 
 Modular monolith platform (Spring Boot 4, Java 21) for event management and ticket sales, with a unified **reserve + purchase** flow based on `TicketOrder`.
 
+## Architecture Diagrams
+
+Documentation diagrams (SVG, editable in draw.io):
+
+### C4 model — `diagrams/c4model/`
+
+![C2 c4model diagram](./diagrams/c4model/ticketwave-c2-container_copy.drawio.svg)
+
+| Level | File | Description |
+|-------|------|-------------|
+| C1 | `ticketwave-c1-context.drawio.svg` | System context: users and external systems around TicketWave |
+| C2 | `ticketwave-c2-container.drawio.svg` | Containers: web/API, monolith, database, Redis |
+| C3 | `ticketwave-c3-event-search.drawio.svg` | Component: event search |
+| C3 | `ticketwave-c3-digital-ticket-service.drawio.svg` | Component: digital ticket service |
+| C3 | `ticketwave-c3-ticket-purchase.drawio.svg` | Component: ticket purchase flow |
+| C3 | `ticketwave-c3-payment-service.drawio.svg` | Component: payment service |
+| C3 | `ticketwave-c3-promotions-service.drawio.svg` | Component: promotions service |
+| C3 | `ticketwave-c3-notifications-service.drawio.svg` | Component: notifications service |
+| C3 | `ticketwave-c3-refunds-cancellations.drawio.svg` | Component: refunds & cancellations |
+
+
 ## Technologies
 
 - **Java 21**

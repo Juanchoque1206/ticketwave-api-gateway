@@ -19,24 +19,30 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 /**
- * Production event transport backed by RabbitMQ. Events are routed on the shared
- * {@code ticketwave.events} topic exchange; this service binds its own queue so
- * it receives the events relevant to the order lifecycle (and deserializes the
- * shared contract, which is present on both classpaths).
+ * Production event transport backed by RabbitMQ. The order service binds its OWN
+ * durable queue to the shared {@code ticketwave.events} topic exchange, so it
+ * receives the events relevant to the order lifecycle without competing with the
+ * legacy monolith or the orchestrator. The queue name is managed from
+ * configuration ({@code ticketwave.bus.events-queue}).
  */
 public class RabbitMQEventBusAdapter implements EventBus {
 
     public static final String EXCHANGE = "ticketwave.events";
-    public static final String QUEUE = "ticketwave.events.all";
     public static final String ROUTING_KEY = "#";
 
     private final RabbitTemplate rabbitTemplate;
     private final AmqpAdmin amqpAdmin;
+    private final String queue;
     private final Map<Class<?>, List<Consumer<DomainEvent>>> handlers = new ConcurrentHashMap<>();
 
-    public RabbitMQEventBusAdapter(RabbitTemplate rabbitTemplate, AmqpAdmin amqpAdmin) {
+    public RabbitMQEventBusAdapter(RabbitTemplate rabbitTemplate, AmqpAdmin amqpAdmin, String queue) {
         this.rabbitTemplate = rabbitTemplate;
         this.amqpAdmin = amqpAdmin;
+        this.queue = queue;
+    }
+
+    public String getQueue() {
+        return queue;
     }
 
     @PostConstruct
@@ -45,7 +51,7 @@ public class RabbitMQEventBusAdapter implements EventBus {
             return;
         }
         TopicExchange exchange = new TopicExchange(EXCHANGE, true, false);
-        Queue queue = new Queue(QUEUE, true);
+        Queue queue = new Queue(this.queue, true);
         Binding binding = BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
         amqpAdmin.declareExchange(exchange);
         amqpAdmin.declareQueue(queue);
@@ -57,7 +63,7 @@ public class RabbitMQEventBusAdapter implements EventBus {
         rabbitTemplate.convertAndSend(EXCHANGE, event.getClass().getSimpleName(), event);
     }
 
-    @RabbitListener(queues = QUEUE)
+    @RabbitListener(queues = "#{@rabbitMqEventBus.queue}")
     public void onMessage(DomainEvent event) {
         for (Consumer<DomainEvent> consumer : handlers.getOrDefault(event.getClass(), List.of())) {
             consumer.accept(event);
